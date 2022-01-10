@@ -14,5 +14,5 @@ def hello_world():
         return render_template('index.html', user_image = '')
     else:
         img64 = request.form['base64']
-        encoded_data = img64.split(',')[1]
+        encoded_data = str(img64).split(',')[1]
         return render_template('index.html', user_image = encoded_data)
