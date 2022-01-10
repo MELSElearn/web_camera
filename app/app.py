@@ -13,6 +13,12 @@ def hello_world():
     else:
         txt64 = request.form['txt64']
         encoded_data = txt64.split(',')[1]
-        encoded_data = base64.b64decode(encoded_data)
-        nparr = np.fromstring(encoded_data, dtype=np.uint8)
-        return render_template('index.html', user_image = '')
+        encoded_data = b64decode(encoded_data)
+        nparr = np.frombuffer(encoded_data, np.uint8)
+        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+        
+        _, im_arr = cv2.imencode('.png', img)
+        im_bytes = im_arr.tobytes()
+        im_b64 = b64encode(im_bytes).decode("utf-8")
+
+        return render_template('index.html', user_image = im_b64)
