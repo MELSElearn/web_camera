@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request
 import numpy as np
-import cv2
-
 
 app = Flask(__name__)
 
