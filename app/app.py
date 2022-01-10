@@ -11,4 +11,5 @@ def hello_world():
         return render_template('index.html', user_image = '')
     else:
         txt64 = request.form['txt64']
-        return render_template('index.html', user_image = '')
+        encoded_data = txt64.split(',')[1]
+        return render_template('index.html', user_image = encoded_data)
