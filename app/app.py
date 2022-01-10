@@ -13,5 +13,5 @@ def hello_world():
     else:
         txt64 = request.form['txt64']
         encoded_data = txt64.split(',')[1]
-        nparr = np.fromstring(encoded_data.decode('base64'), np.uint8)
+        nparr = np.frombuffer(base64.b64decode(encoded_data), dtype=np.uint8)
         return render_template('index.html', user_image = '')
