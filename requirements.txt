@@ -21,7 +21,4 @@ mediapipe==0.8.9.1
 cvzone==1.5.4
 opencv-python==4.5.5.62
 Pillow==4.2.1
-python-engineio==1.7.0
-python-socketio==1.7.7
-Werkzeug==0.12.2
 pybase64==1.0.1
