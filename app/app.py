@@ -14,4 +14,5 @@ def hello_world():
         return render_template('index.html', user_image = '')
     else:
         img64 = request.form['base64']
-        return render_template('index.html', user_image = '')
+        img64 = img64.replace("data:image/jpeg;base64,", "")
+        return render_template('index.html', user_image = img64)
