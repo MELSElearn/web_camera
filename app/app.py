@@ -15,8 +15,4 @@ def hello_world():
         encoded_data = txt64.split(',')[1]
         nparr = np.fromstring(encoded_data.decode('base64'), np.uint8)
         img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
-        _, im_arr = cv2.imencode('.png', img)  # im_arr: image in Numpy one-dim array format.
-        im_bytes = im_arr.tobytes()
-        im_b64 = b64encode(im_bytes).decode("utf-8")
-
-        return render_template('index.html', user_image = im_b64)
+        return render_template('index.html', user_image = '')
