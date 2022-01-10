@@ -35,7 +35,7 @@ def hello_world():
     
 @app.route("/api/info", methods=['GET','POST'])
 def api_info():
-    txt64 = request.args.get("todo")
+    txt64 = request.form.get("todo")
     encoded_data = txt64.split(',')[1]
     encoded_data = b64decode(encoded_data)
     nparr = np.frombuffer(encoded_data, np.uint8)
