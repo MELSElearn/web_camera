@@ -32,3 +32,8 @@ def hello_world():
         im_b64 = b64encode(im_bytes).decode("utf-8")
 
         return render_template('index.html', user_image = im_b64)
+    
+@app.route("/api/info")
+def api_info():
+    im_b64 = 'asdasdads'
+    return im_b64
