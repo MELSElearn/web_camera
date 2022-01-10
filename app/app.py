@@ -20,7 +20,13 @@ def hello_world():
         
         detector = HandDetector(detectionCon=0.8, maxHands=2)
         hands, img = detector.findHands(img)
+        totalfingers=0
+        if hands:
+            fingers = detector.fingersUp(hands[0])
+            totalfingers = fingers.count(1)
         
+        cv2.putText(img,f'{int(totalfingers)}',(50,70), cv2.FONT_HERSHEY_PLAIN,5,(250,0,0),5)
+            
         _, im_arr = cv2.imencode('.png', img)
         im_bytes = im_arr.tobytes()
         im_b64 = b64encode(im_bytes).decode("utf-8")
