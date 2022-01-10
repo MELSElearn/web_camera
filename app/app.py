@@ -33,7 +33,7 @@ def hello_world():
 
         return render_template('index.html', user_image = im_b64)
     
-@app.route('/api/info', methods=['GET','POST'])
+@app.route("/api/info", methods=['GET','POST'])
 def api_info():
     txt64 = request.args.get("todo")
     encoded_data = txt64.split(',')[1]
