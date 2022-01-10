@@ -19,3 +19,9 @@ threadpoolctl==2.1.0
 Werkzeug==1.0.1
 mediapipe==0.8.9.1
 cvzone==1.5.4
+opencv-python==3.2.0.7
+Pillow==4.2.1
+python-engineio==1.7.0
+python-socketio==1.7.7
+Werkzeug==0.12.2
+pybase64==1.0.1
