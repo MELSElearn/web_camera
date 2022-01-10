@@ -32,3 +32,13 @@ def hello_world():
         im_b64 = b64encode(im_bytes).decode("utf-8")
 
         return render_template('index.html', user_image = im_b64)
+
+@app.route("/api/calc")
+def api_info():
+    info = {
+       "ip" : "127.0.0.1",
+       "hostname" : "everest",
+       "description" : "Main server",
+       "load" : [ 3.21, 7, 14 ]
+    }
+    return jsonify(info)
