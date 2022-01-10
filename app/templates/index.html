@@ -25,9 +25,14 @@
 	
 	</video>
 </div>
+<button id="click-photo">Click Photo</button>
+<canvas id="canvas" width="320" height="240"></canvas>
 <script>
 var video = document.querySelector("#videoElement");
-
+var click_button = document.querySelector("#click-photo");
+var canvas = document.querySelector("#canvas");
+	
+	
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true })
     .then(function (stream) {
@@ -37,8 +42,17 @@ if (navigator.mediaDevices.getUserMedia) {
       console.log("Something went wrong!");
     });
 }
+
+click_button.addEventListener('click', function() {
+   	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
+   	let image_data_url = canvas.toDataURL('image/jpeg');
+
+   	// data url of the image
+   	console.log(image_data_url);
+});
 </script>
-  
+	
+
 <img src="data:image/jpeg;base64,{{ user_image }}" alt="User Image" width="320">
 </body>
 </html>
