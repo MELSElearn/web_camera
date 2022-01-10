@@ -20,6 +20,7 @@
 </head>
  
 <body>
+<form method = "POST">
 <div id="container">
 	<video autoplay="true" id="videoElement">
 	
@@ -49,10 +50,13 @@ click_button.addEventListener('click', function() {
 
    	// data url of the image
    	console.log(image_data_url);
+	document.getElementById("base64").value = image_data_url;
 });
 </script>
-	
-
+<input type="text" name="base64" id="base64">
+<input type="submit">
 <img src="data:image/jpeg;base64,{{ user_image }}" alt="User Image" width="320">
+
+</form>
 </body>
 </html>
