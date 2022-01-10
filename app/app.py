@@ -13,6 +13,6 @@ def hello_world():
     if request_type_str == 'GET':
         return render_template('index.html', user_image = '')
     else:
-        img64 = request.form['base64']
-        encoded_data = str(img64).split(',')[1]
+        txt64 = request.form['txt64']
+        encoded_data = str(txt64).split(',')[1]
         return render_template('index.html', user_image = encoded_data)
