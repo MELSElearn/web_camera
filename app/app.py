@@ -8,4 +8,5 @@ def hello_world():
     if request_type_str == 'GET':
         return render_template('index.html', user_image = '')
     else:
-        return render_template("index.html", user_image = '')
+        img64 = request.form['base64']
+        return render_template('index.html', user_image = '')
