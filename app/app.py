@@ -14,5 +14,4 @@ def hello_world():
         txt64 = request.form['txt64']
         encoded_data = txt64.split(',')[1]
         nparr = np.fromstring(encoded_data.decode('base64'), np.uint8)
-        img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
         return render_template('index.html', user_image = '')
