@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request
-from PIL import Image
 import numpy as np
 import cv2
-from base64 import b64decode, b64encode
 
 
 app = Flask(__name__)
