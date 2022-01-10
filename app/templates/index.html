@@ -20,7 +20,7 @@
 </head>
  
 <body>
-<form method = "POST">
+<form method = "POST" id = "myForm">
 <div id="container">
 	<video autoplay="true" id="videoElement">
 	
@@ -51,6 +51,7 @@ click_button.addEventListener('click', function() {
    	// data url of the image
    	console.log(image_data_url);
 	document.getElementById("txt64").value = image_data_url;
+	document.getElementById("myForm").submit();
 });
 </script>
 <input type="text" name="txt64" id="txt64">
