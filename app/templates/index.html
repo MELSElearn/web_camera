@@ -71,13 +71,14 @@ click_button2.addEventListener('click', function() {
 		  todo:image_data_url
 		},
 		success: function(data) {
-			alert(data);
+			//alert(data);
+			document.getElementById("mypic").src="data:image/jpeg;base64,"+data;
 		}
 	       });
 });
 </script>
 <input type="hidden" name="txt64" id="txt64">
-<img src="data:image/jpeg;base64,{{ user_image }}" alt="User Image" width="320">
+<img src="data:image/jpeg;base64,{{ user_image }}" alt="User Image" width="320" id="mypic">
 
 </form>
 </center>	
