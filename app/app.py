@@ -2,6 +2,7 @@ from flask import Flask, render_template, request
 import numpy as np
 import cv2
 from base64 import b64decode, b64encode
+from cvzone.HandTrackingModule import HandDetector
 
 app = Flask(__name__)
 
