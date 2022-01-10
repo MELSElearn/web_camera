@@ -65,7 +65,8 @@ click_button2.addEventListener('click', function() {
    	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
 	let image_data_url = canvas.toDataURL('image/jpeg');
 	canvas.style.display="none";
-	$.ajax({url: '/api/info',
+	$.ajax({type:'POST',
+		url: '/api/info',
 		data:{
 		  todo:image_data_url
 		},
