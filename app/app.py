@@ -135,3 +135,121 @@ def api_info():
     im_bytes = im_arr.tobytes()
     im_b64 = b64encode(im_bytes).decode("utf-8")
     return im_b64
+
+@app.route("/api/checkanswer", methods=['GET','POST'])
+def check_answer():
+    txt64 = request.form.get("todo")
+    encoded_data = txt64.split(',')[1]
+    encoded_data = b64decode(encoded_data)
+    nparr = np.frombuffer(encoded_data, np.uint8)
+    img = cv2.imdecode(nparr, cv2.IMREAD_COLOR)
+    
+    widthImg = 700
+    heighImg =  700
+    questions =5
+    choices =5
+    ans =[1,2,0,1,4]
+    
+    #preprocessing
+    img = cv2.resize(img,(widthImg,heighImg))
+    imgContours = img.copy()
+    imgFinal = img.copy()
+    imgBiggestContours = img.copy()
+
+    imgGray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY) # CONVERT IMAGE TO GRAY SCALE
+    imgBlur = cv2.GaussianBlur(imgGray, (5, 5), 1) # ADD GAUSSIAN BLUR
+    imgCanny = cv2.Canny(imgBlur,10,70) # APPLY CANNY 
+
+    countours, hierarchy = cv2.findContours(imgCanny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE) # FIND ALL CONTOURS
+    cv2.drawContours(imgContours, countours, -1, (0, 255, 0), 10) # DRAW ALL DETECTED CONTOURS
+
+    rectCon=rectContour(countours)
+    biggestContour = getCornerPoints(rectCon[0]) #Answering/Marking Area
+    gradePoints = getCornerPoints(rectCon[1]) #Grade Area
+    
+    if biggestContour.size != 0 and gradePoints.size != 0:
+        cv2.drawContours(imgBiggestContours, biggestContour, -1, (0, 255, 0), 20)
+        cv2.drawContours(imgBiggestContours, gradePoints, -1, (255, 0, 0), 20)
+        biggestContour = reorder(biggestContour)
+        gradePoints = reorder(gradePoints)
+
+        pt1 = np.float32(biggestContour)
+        pt2 = np.float32([[0,0],[widthImg,0],[0,heighImg],[widthImg,heighImg]])
+        matrix = cv2.getPerspectiveTransform(pt1,pt2)
+        imgWarpColored = cv2.warpPerspective(img, matrix,(widthImg,heighImg))
+
+        ptG1 = np.float32(gradePoints)
+        ptG2 = np.float32([[0,0],[325,0],[0,150],[325,150]])
+        matrixG = cv2.getPerspectiveTransform(ptG1,ptG2)
+        imgGradeDisplay = cv2.warpPerspective(img, matrixG,(325,150))
+        #cv2.imshow("Grade", imgGradeDisplay)
+
+        #apply threshold
+
+        imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY) 
+        imgThresh = cv2.threshold(imgWarpGray,170,255,cv2.THRESH_BINARY_INV)[1]
+
+        boxes = splitBoxes(imgThresh)
+        #cv2.imshow("Test", boxes[2])
+        #print(cv2.countNonZero(boxes[1]),cv2.countNonZero(boxes[2]) )
+
+        # Getting non zero pixel value of each box
+        myPixelVal = np.zeros((questions,choices))
+
+        countR = 0
+        countC = 0
+
+        for image in boxes:
+            totalPixels = cv2.countNonZero(image)
+            myPixelVal[countR][countC] = totalPixels
+            countC = countC+1
+            if (countC==choices):
+                countR = countR+1
+                countC = 0
+
+        print(myPixelVal)
+
+        #finding index value of the marking
+        myIndex = []
+        for x in range(0,questions):
+            arr = myPixelVal[x]
+            #print('arr',arr)
+            myIndexVal = np.where(arr==np.amax(arr))
+            #print(myIndexVal[0])
+            myIndex.append(myIndexVal[0][0])
+
+        #print(myIndex)
+
+        #compare the answer and grade
+        grading =[]
+        for x in range(0,questions):
+            if ans[x] == myIndex[x]:
+                grading.append(1)
+            else:
+                grading.append(0)
+
+        score = (sum(grading)/questions) * 100 #final grade
+
+
+        imgResult = imgWarpColored.copy()
+        imgResult = showAnswers(imgResult,myIndex,grading,ans,questions,choices)
+        imgRawDrawing = np.zeros_like(imgWarpColored)
+        imgRawDrawing = showAnswers(imgRawDrawing,myIndex,grading,ans,questions,choices)
+        invmatrix = cv2.getPerspectiveTransform(pt2,pt1)
+        imgInvWarp = cv2.warpPerspective(imgRawDrawing, invmatrix,(widthImg,heighImg))
+
+        imgRawGrade = np.zeros_like(imgGradeDisplay)
+        cv2.putText(imgRawGrade, str(int(score))+"%",(50,100),cv2.FONT_HERSHEY_COMPLEX,3,(0,255,255),3)
+        invmatrixG = cv2.getPerspectiveTransform(ptG2,ptG1)
+        imgInvGradeDisplay = cv2.warpPerspective(imgRawGrade, invmatrixG,(widthImg,heighImg))
+
+        imgFinal = cv2.addWeighted(imgFinal,1,imgInvWarp,1,0)
+        imgFinal = cv2.addWeighted(imgFinal,1,imgInvGradeDisplay,1,0)
+
+
+
+
+    _, im_arr = cv2.imencode('.png', imgFinal)
+    im_bytes = im_arr.tobytes()
+    im_b64 = b64encode(im_bytes).decode("utf-8")
+    return im_b64
