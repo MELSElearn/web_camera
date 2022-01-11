@@ -216,6 +216,13 @@ def check_answer():
                 grading.append(0)
 
         score = (sum(grading)/questions) * 100 #final grade
+        
+        imgResult = imgWarpColored.copy()
+        imgResult = showAnswers(imgResult,myIndex,grading,ans,questions,choices)
+        imgRawDrawing = np.zeros_like(imgWarpColored)
+        imgRawDrawing = showAnswers(imgRawDrawing,myIndex,grading,ans,questions,choices)
+        invmatrix = cv2.getPerspectiveTransform(pt2,pt1)
+        imgInvWarp = cv2.warpPerspective(imgRawDrawing, invmatrix,(widthImg,heighImg))
          
         
         
