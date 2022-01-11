@@ -162,6 +162,10 @@ def check_answer():
 
     countours, hierarchy = cv2.findContours(imgCanny, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_NONE) # FIND ALL CONTOURS
     cv2.drawContours(imgContours, countours, -1, (0, 255, 0), 10) # DRAW ALL DETECTED CONTOURS
+    
+    rectCon=rectContour(countours)
+    biggestContour = getCornerPoints(rectCon[0]) #Answering/Marking Area
+    gradePoints = getCornerPoints(rectCon[1]) #Grade Area
 
     
     _, im_arr = cv2.imencode('.png', imgFinal)
