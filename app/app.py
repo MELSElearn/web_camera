@@ -182,6 +182,17 @@ def check_answer():
         ptG2 = np.float32([[0,0],[325,0],[0,150],[325,150]])
         matrixG = cv2.getPerspectiveTransform(ptG1,ptG2)
         imgGradeDisplay = cv2.warpPerspective(img, matrixG,(325,150))
+        
+        imgWarpGray = cv2.cvtColor(imgWarpColored, cv2.COLOR_BGR2GRAY) 
+        imgThresh = cv2.threshold(imgWarpGray,170,255,cv2.THRESH_BINARY_INV)[1]
+
+        boxes = splitBoxes(imgThresh)
+        myPixelVal = np.zeros((questions,choices))
+
+        countR = 0
+        countC = 0
+        
+        
 
 
     
