@@ -208,6 +208,16 @@ def check_answer():
             #print(myIndexVal[0])
             myIndex.append(myIndexVal[0][0])
         
+        grading =[]
+        for x in range(0,questions):
+            if ans[x] == myIndex[x]:
+                grading.append(1)
+            else:
+                grading.append(0)
+
+        score = (sum(grading)/questions) * 100 #final grade
+         
+        
         
 
 
