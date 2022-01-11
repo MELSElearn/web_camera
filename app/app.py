@@ -192,6 +192,22 @@ def check_answer():
         countR = 0
         countC = 0
         
+        for image in boxes:
+            totalPixels = cv2.countNonZero(image)
+            myPixelVal[countR][countC] = totalPixels
+            countC = countC+1
+            if (countC==choices):
+                countR = countR+1
+                countC = 0
+
+        myIndex = []
+        for x in range(0,questions):
+            arr = myPixelVal[x]
+            #print('arr',arr)
+            myIndexVal = np.where(arr==np.amax(arr))
+            #print(myIndexVal[0])
+            myIndex.append(myIndexVal[0][0])
+        
         
 
 
