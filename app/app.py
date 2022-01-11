@@ -223,6 +223,14 @@ def check_answer():
         imgRawDrawing = showAnswers(imgRawDrawing,myIndex,grading,ans,questions,choices)
         invmatrix = cv2.getPerspectiveTransform(pt2,pt1)
         imgInvWarp = cv2.warpPerspective(imgRawDrawing, invmatrix,(widthImg,heighImg))
+        imgRawGrade = np.zeros_like(imgGradeDisplay)
+        cv2.putText(imgRawGrade, str(int(score))+"%",(50,100),cv2.FONT_HERSHEY_COMPLEX,3,(0,255,255),3)
+        invmatrixG = cv2.getPerspectiveTransform(ptG2,ptG1)
+        imgInvGradeDisplay = cv2.warpPerspective(imgRawGrade, invmatrixG,(widthImg,heighImg))
+
+        imgFinal = cv2.addWeighted(imgFinal,1,imgInvWarp,1,0)
+        imgFinal = cv2.addWeighted(imgFinal,1,imgInvGradeDisplay,1,0)
+        
          
         
         
