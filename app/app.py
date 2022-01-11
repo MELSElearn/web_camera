@@ -166,6 +166,23 @@ def check_answer():
     rectCon=rectContour(countours)
     biggestContour = getCornerPoints(rectCon[0]) #Answering/Marking Area
     gradePoints = getCornerPoints(rectCon[1]) #Grade Area
+    
+    if biggestContour.size != 0 and gradePoints.size != 0:
+        cv2.drawContours(imgBiggestContours, biggestContour, -1, (0, 255, 0), 20)
+        cv2.drawContours(imgBiggestContours, gradePoints, -1, (255, 0, 0), 20)
+        biggestContour = reorder(biggestContour)
+        gradePoints = reorder(gradePoints)
+        
+        pt1 = np.float32(biggestContour)
+        pt2 = np.float32([[0,0],[widthImg,0],[0,heighImg],[widthImg,heighImg]])
+        matrix = cv2.getPerspectiveTransform(pt1,pt2)
+        imgWarpColored = cv2.warpPerspective(img, matrix,(widthImg,heighImg))
+
+        ptG1 = np.float32(gradePoints)
+        ptG2 = np.float32([[0,0],[325,0],[0,150],[325,150]])
+        matrixG = cv2.getPerspectiveTransform(ptG1,ptG2)
+        imgGradeDisplay = cv2.warpPerspective(img, matrixG,(325,150))
+
 
     
     _, im_arr = cv2.imencode('.png', imgFinal)
