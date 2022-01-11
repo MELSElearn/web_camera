@@ -39,6 +39,7 @@ var click_button2 = document.querySelector("#butajax");
 var canvas = document.querySelector("#canvas");
 var counter = 0;
 var checkcounter = 0;
+/*
 setInterval(AutodisplayImage, 5000);
 
 function AutodisplayImage() {
@@ -71,7 +72,7 @@ function AutodisplayImage() {
 		
 	}
 }	
-	
+*/	
 if (navigator.mediaDevices.getUserMedia) {
   navigator.mediaDevices.getUserMedia({ video: true })
     .then(function (stream) {
@@ -94,7 +95,7 @@ click_button.addEventListener('click', function() {
 	document.getElementById("myForm").submit();
 });
 click_button2.addEventListener('click', function() {
-	/*
+	
 	canvas.style.display="block";
    	canvas.getContext('2d').drawImage(video, 0, 0, canvas.width, canvas.height);
 	let image_data_url = canvas.toDataURL('image/jpeg');
@@ -109,7 +110,7 @@ click_button2.addEventListener('click', function() {
 			document.getElementById("mypic").src="data:image/jpeg;base64,"+data;
 		}
 	       });
-	*/
+	/*
 	if (counter == 0)
 	{
 		counter = 1;
@@ -117,6 +118,7 @@ click_button2.addEventListener('click', function() {
 	{
 		counter = 0;
 	}
+	*/
 	
 });
 </script>
